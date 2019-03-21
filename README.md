@@ -1,5 +1,4 @@
 # chill-fridge
-Chill Fridge
 
 Firmware for Boulder's beverage fridge to drive LED strips. 
 

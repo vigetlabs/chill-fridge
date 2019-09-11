@@ -15,14 +15,17 @@ long start;
 int data;
 int localMax = 0;
 int localMin = 0;
-int threshold = 17;
+int threshold = 1900;
 int interval = 500;
+
+int split = 0;
 
 int targetEffect = RAINBOW;
 int currentEffect = RAINBOW;
 
 bool gettingPower = true;
 
+// multiplies led count by 4 to make the rainbow effect show less color at once
 WS2812FX ws2812fx = WS2812FX(LED_COUNT*4, LED_PIN, WS2812B);
 
 void setup() {
@@ -31,6 +34,8 @@ void setup() {
   //  initialize default effect as RAINBOW
   setEffect(RAINBOW);
   ws2812fx.start();
+  
+  Particle.variable("split", split);
 }
 
 void loop() {
@@ -101,8 +106,10 @@ void checkPower(void) {
 
   // conditional to check for loss of current every second
   if (currentTime > start + interval) {
-      Serial.println(localMax - localMin);
-      if (localMax - localMin < threshold)    {
+      split = localMax - localMin;
+      
+      Serial.println(split);
+      if (split < threshold)    {
         gettingPower = false;
       }
       else {
